@@ -1,24 +1,17 @@
 // DTC_lyrics_to_clipboard.js
+javascript:(function(w,d){const UI_ID='dtc-copy-ui',TOP_UI_ID='dtc-copy-ui-top',HBC='element-hitbox-active',OSK='data-dtc-original-style',SELS=['h3.songTitle','p.contentTamil','p.contentEnglish'];if(d.getElementById(UI_ID)||d.getElementById(TOP_UI_ID)){if(w.dtcCleaner)w.dtcCleaner();return}function iAS(){const id='dtc-animation-styles';if(d.getElementById(id))return;const s=d.createElement('style');s.id=id;s.textContent='@keyframes dtc-glow-effect{0%{opacity:.8;box-shadow:0 0 20px 8px var(--dtc-glow-color,#fff)}100%{opacity:0;box-shadow:0 0 120px 8px var(--dtc-glow-color,#fff)}}.dtc-glow-animation{position:absolute;pointer-events:none;z-index:99999;border-radius:5px;animation:dtc-glow-effect 1s ease-out forwards}';d.head.appendChild(s)}function pGA(el){if(!el)return;const r=el.getBoundingClientRect(),g=d.createElement('div');g.className='dtc-glow-animation';const c=el.getAttribute('data-element-hitbox-color')||'rgba(255,255,255,0.8)';g.style.cssText=`left:${r.left+w.scrollX}px;top:${r.top+w.scrollY}px;width:${r.width}px;height:${r.height}px;--dtc-glow-color:${c};`;d.body.appendChild(g);setTimeout(()=>g.remove(),1000)}function rC(){const h=~~(Math.random()*360);return`hsla(${h}, 100%, 70%, 0.8)`}function aH(el,c){if(!el)return;if(!c){c=el.getAttribute('data-element-hitbox-color')||rC();el.setAttribute('data-element-hitbox-color',c)}if(!el.hasAttribute(OSK)){const s={b:el.style.border,o:el.style.outline,x:el.style.boxShadow};el.setAttribute(OSK,JSON.stringify(s))}el.style.border=`3px solid ${c}`;el.style.outline=`2px dashed ${c}`;el.style.boxShadow=`0 0 10px ${c}`;el.classList.add(HBC)}function rmH(el,k=!1){if(!el||!el.hasAttribute(OSK))return;const s=JSON.parse(el.getAttribute(OSK));el.style.border=s.b,el.style.outline=s.o,el.style.boxShadow=s.x,el.removeAttribute(OSK),k||el.removeAttribute('data-element-hitbox-color'),el.classList.remove(HBC)}function hAH(k=!1){d.querySelectorAll(`.${HBC}`).forEach(e=>rmH(e,k))}function sAIH(){SELS.forEach(sel=>aH(d.querySelector(sel)))}w.dtcHighlightElement=function(sel,show){hAH(!0),show?aH(d.querySelector(sel)):sAIH()};w.dtcC=function(sel,btn){const el=d.querySelector(sel),oT=btn.innerText;if(!el)return btn.innerText='Not Found',void setTimeout(()=>btn.innerText=oT,1e3);const ta=d.createElement('textarea');ta.value=el.innerText.replace(/\r?\n/g,'\n'),d.body.appendChild(ta),ta.select();try{d.execCommand('copy'),btn.innerText='Copied!',pGA(el)}catch(e){btn.innerText='Error'}d.body.removeChild(ta),setTimeout(()=>btn.innerText=oT,1e3)};function iC(){const e=SELS.map(s=>d.querySelector(s)).filter(el=>el);if(e.length===0)return;const cT=e.map(el=>el.innerText.replace(/\r?\n/g,'\n').trim()).join('\n\n');if(!cT)return;const ta=d.createElement('textarea');ta.value=cT,d.body.appendChild(ta),ta.select();try{d.execCommand('copy'),e.forEach(el=>pGA(el))}catch(err){console.error('DTC Bookmarklet: Failed to auto-copy text.',err)}d.body.removeChild(ta)}function cSUI(){const ui=d.createElement('div');ui.id=UI_ID,ui.style.cssText='position:fixed;top:20px;right:20px;z-index:999999;background:rgba(0,0,0,0.2);color:#fff;padding:15px;border-radius:8px;font-family:sans-serif;box-shadow:0 4px 10px rgba(0,0,0,0.3);max-width:220px;';const t=d.createElement('b');t.style.cssText='font-size:16px;display:block;margin-bottom:5px;',t.textContent='Sections Copied!',ui.appendChild(t);SELS.forEach(s=>{const b=d.createElement('button');b.style.cssText='display:block;width:100%;background:rgba(51,51,51,0.7);color:#fff;border:1px solid #555;padding:8px;margin:5px 0;border-radius:4px;cursor:pointer;text-align:left;',b.textContent=s,b.addEventListener('mouseover',()=>{b.style.background='rgba(68,68,68,0.8)',w.dtcHighlightElement(s,!0);const el=d.querySelector(s);if(el)el.scrollIntoView({behavior:'smooth',block:'center'})}),b.addEventListener('mouseout',()=>{b.style.background='rgba(51,51,51,0.7)',w.dtcHighlightElement(null,!1)}),b.addEventListener('click',()=>{w.dtcC(s,b)}),ui.appendChild(b)});const f=d.createElement('div');f.style.cssText='font-size:11px;color:#FFF;margin-top:8px;text-align:center;',f.textContent='Press Esc to close',ui.appendChild(f),d.body.appendChild(ui);return ui}function cTUI(){const ui=d.createElement('div');ui.id=TOP_UI_ID,ui.style.cssText='position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:999998;background:rgba(0,0,0,0.2);color:#fff;padding:8px 15px;border-radius:0 0 8px 8px;font-family:sans-serif;box-shadow:0 4px 10px rgba(0,0,0,0.3);display:flex;gap:10px;align-items:center;';SELS.forEach(s=>{const b=d.createElement('button');b.style.cssText='background:rgba(51,51,51,0.7);color:#fff;border:1px solid #555;padding:8px 12px;border-radius:4px;cursor:pointer;text-align:left;',b.textContent=s,b.addEventListener('mouseover',()=>{b.style.background='rgba(68,68,68,0.8)',w.dtcHighlightElement(s,!0);const el=d.querySelector(s);if(el)el.scrollIntoView({behavior:'smooth',block:'center'})}),b.addEventListener('mouseout',()=>{b.style.background='rgba(51,51,51,0.7)',w.dtcHighlightElement(null,!1)}),b.addEventListener('click',()=>{w.dtcC(s,b)}),ui.appendChild(b)});d.body.appendChild(ui);return ui}function cl(){hAH();const sui=d.getElementById(UI_ID);if(sui)sui.remove();const tui=d.getElementById(TOP_UI_ID);if(tui)tui.remove();d.removeEventListener('keydown',eH);const s=d.getElementById('dtc-animation-styles');if(s)s.remove();delete w.dtcC,delete w.dtcCleaner,delete w.dtcHighlightElement}const eH=e=>{if(e.key==='Escape'){cl()}};iAS();iC();cSUI();cTUI();sAIH();d.addEventListener('keydown',eH);w.dtcCleaner=cl;})(window,document);
 
-javascript:(function(w,d){const UI_ID='dtc-copy-ui',HBC='element-hitbox-active',OSK='data-dtc-original-style',SELS=['h3.songTitle','p.contentTamil','p.contentEnglish'];if(d.getElementById(UI_ID)){if(w.dtcCleaner)w.dtcCleaner();return}function iAS(){const id='dtc-animation-styles';if(d.getElementById(id))return;const s=d.createElement('style');s.id=id;s.textContent='@keyframes dtc-glow-effect{0%{opacity:.8;box-shadow:0 0 20px 8px var(--dtc-glow-color,#fff)}100%{opacity:0;box-shadow:0 0 120px 8px var(--dtc-glow-color,#fff)}}.dtc-glow-animation{position:absolute;pointer-events:none;z-index:99999;border-radius:5px;animation:dtc-glow-effect 1s ease-out forwards}';d.head.appendChild(s)}function pGA(el){if(!el)return;const r=el.getBoundingClientRect(),g=d.createElement('div');g.className='dtc-glow-animation';const c=el.getAttribute('data-element-hitbox-color')||'rgba(255,255,255,0.8)';g.style.cssText=`left:${r.left+w.scrollX}px;top:${r.top+w.scrollY}px;width:${r.width}px;height:${r.height}px;--dtc-glow-color:${c};`;d.body.appendChild(g);setTimeout(()=>g.remove(),1000)}function rC(){const h=~~(Math.random()*360);return`hsla(${h}, 100%, 70%, 0.8)`}function aH(el,c){if(!el)return;if(!c){c=el.getAttribute('data-element-hitbox-color')||rC();el.setAttribute('data-element-hitbox-color',c)}if(!el.hasAttribute(OSK)){const s={b:el.style.border,o:el.style.outline,x:el.style.boxShadow};el.setAttribute(OSK,JSON.stringify(s))}el.style.border=`3px solid ${c}`;el.style.outline=`2px dashed ${c}`;el.style.boxShadow=`0 0 10px ${c}`;el.classList.add(HBC)}function rmH(el,k=!1){if(!el||!el.hasAttribute(OSK))return;const s=JSON.parse(el.getAttribute(OSK));el.style.border=s.b,el.style.outline=s.o,el.style.boxShadow=s.x,el.removeAttribute(OSK),k||el.removeAttribute('data-element-hitbox-color'),el.classList.remove(HBC)}function hAH(k=!1){d.querySelectorAll(`.${HBC}`).forEach(e=>rmH(e,k))}function sAIH(){SELS.forEach(sel=>aH(d.querySelector(sel)))}w.dtcHighlightElement=function(sel,show){hAH(!0),show?aH(d.querySelector(sel)):sAIH()};w.dtcC=function(sel,btn){const el=d.querySelector(sel),oT=btn.innerText;if(!el)return btn.innerText='Not Found',void setTimeout(()=>btn.innerText=oT,1e3);const ta=d.createElement('textarea');ta.value=el.innerText.replace(/\r?\n/g,'\n'),d.body.appendChild(ta),ta.select();try{d.execCommand('copy'),btn.innerText='Copied!',pGA(el)}catch(e){btn.innerText='Error'}d.body.removeChild(ta),setTimeout(()=>btn.innerText=oT,1e3)};function iC(){const e=SELS.map(s=>d.querySelector(s)).filter(el=>el);if(e.length===0)return;sAIH();const cT=e.map(el=>el.innerText.replace(/\r?\n/g,'\n').trim()).join('\n\n');if(!cT)return;const ta=d.createElement('textarea');ta.value=cT,d.body.appendChild(ta),ta.select();try{d.execCommand('copy'),e.forEach(el=>pGA(el))}catch(err){console.error('DTC Bookmarklet: Failed to auto-copy text.',err)}d.body.removeChild(ta)}function cU(){const ui=d.createElement('div');ui.id=UI_ID,ui.style.cssText='position:fixed;top:20px;right:20px;z-index:999999;background:rgba(0,0,0,0.9);color:#fff;padding:15px;border-radius:8px;font-family:sans-serif;box-shadow:0 4px 10px rgba(0,0,0,0.3);max-width:220px;';const t=d.createElement('b');t.style.cssText='font-size:16px;display:block;margin-bottom:5px;',t.textContent='Sections Copied!',ui.appendChild(t);SELS.forEach(s=>{const b=d.createElement('button');b.style.cssText='display:block;width:100%;background:#333;color:#fff;border:1px solid #555;padding:8px;margin:5px 0;border-radius:4px;cursor:pointer;text-align:left;',b.textContent=s,b.addEventListener('mouseover',()=>{b.style.background='#444',w.dtcHighlightElement(s,!0);const el=d.querySelector(s);if(el)el.scrollIntoView({behavior:'smooth',block:'center'})}),b.addEventListener('mouseout',()=>{b.style.background='#333',w.dtcHighlightElement(null,!1)}),b.addEventListener('click',()=>{w.dtcC(s,b)}),ui.appendChild(b)});const f=d.createElement('div');f.style.cssText='font-size:11px;color:#999;margin-top:8px;text-align:center;',f.textContent='Press Esc to close',ui.appendChild(f),d.body.appendChild(ui);return ui}function cl(){hAH();const ui=d.getElementById(UI_ID);if(ui)ui.remove();d.removeEventListener('keydown',eH);const s=d.getElementById('dtc-animation-styles');if(s)s.remove();delete w.dtcC,delete w.dtcCleaner,delete w.dtcHighlightElement}const eH=e=>{if(e.key==='Escape'){cl()}};iAS();iC();cU();sAIH();d.addEventListener('keydown',eH);w.dtcCleaner=cl;})(window,document);
-
-// =================================================================================
-// ONE-LINE BOOKMARKLET (above code snippet)
-// To use: Copy the entire line of code below, then create a new bookmark in your
-// browser. Paste the code into the URL/address field
-// =================================================================================
-// MULTI-LINE (for development and readability)
-// This is the more readable & editable version of the script above.
-// =================================================================================
+// DTC_lyrics_to_clipboard.js
 
 (function(window, document) {
     const UI_ID = 'dtc-copy-ui';
+    const TOP_UI_ID = 'dtc-copy-ui-top';
     const HITBOX_CLASS = 'element-hitbox-active';
     const ORIGINAL_STYLE_KEY = 'data-dtc-original-style';
     const SELECTORS = ['h3.songTitle', 'p.contentTamil', 'p.contentEnglish'];
 
     // If the UI exists, remove it and clean up to allow toggling.
-    if (document.getElementById(UI_ID)) {
+    if (document.getElementById(UI_ID) || document.getElementById(TOP_UI_ID)) {
         if (window.dtcCleaner) window.dtcCleaner();
         return;
     }
@@ -142,16 +135,84 @@ javascript:(function(w,d){const UI_ID='dtc-copy-ui',HBC='element-hitbox-active',
         }
         document.body.removeChild(tempTextarea);
     }
-    // ...existing code...
+
+    // --- UI Creation ---
+    function createSideUI() {
+        const ui = document.createElement('div');
+        ui.id = UI_ID;
+        // Changed background to rgba(0,0,0,0.2)
+        ui.style.cssText = 'position:fixed;top:20px;right:20px;z-index:999999;background:rgba(0,0,0,0.2);color:#fff;padding:15px;border-radius:8px;font-family:sans-serif;box-shadow:0 4px 10px rgba(0,0,0,0.3);max-width:220px;';
+        const title = document.createElement('b');
+        title.style.cssText = 'font-size:16px;display:block;margin-bottom:5px;';
+        title.textContent = 'Sections Copied!';
+        ui.appendChild(title);
+
+        SELECTORS.forEach(s => {
+            const button = document.createElement('button');
+            // Changed background to rgba(51,51,51,0.7) and on hover to rgba(68,68,68,0.8)
+            button.style.cssText = 'display:block;width:100%;background:rgba(51,51,51,0.7);color:#fff;border:1px solid #555;padding:8px;margin:5px 0;border-radius:4px;cursor:pointer;text-align:left;';
+            button.textContent = s;
+            button.addEventListener('mouseover', () => {
+                button.style.background = 'rgba(68,68,68,0.8)';
+                window.dtcHighlightElement(s, true);
+                const el = document.querySelector(s);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+            button.addEventListener('mouseout', () => {
+                button.style.background = 'rgba(51,51,51,0.7)';
+                window.dtcHighlightElement(null, false);
+            });
+            button.addEventListener('click', () => { window.dtcCopy(s, button); });
+            ui.appendChild(button);
+        });
+
+        const footer = document.createElement('div');
+        footer.style.cssText = 'font-size:11px;color:#FFF;margin-top:8px;text-align:center;';
+        footer.textContent = 'Press Esc to close';
+        ui.appendChild(footer);
+        document.body.appendChild(ui);
+        return ui;
+    }
+
+    function createTopUI() {
+        const ui = document.createElement('div');
+        ui.id = TOP_UI_ID;
+        // Changed background to rgba(0,0,0,0.2)
+        ui.style.cssText = 'position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:999998;background:rgba(0,0,0,0.2);color:#fff;padding:8px 15px;border-radius:0 0 8px 8px;font-family:sans-serif;box-shadow:0 4px 10px rgba(0,0,0,0.3);display:flex;gap:10px;align-items:center;';
+
+        SELECTORS.forEach(s => {
+            const button = document.createElement('button');
+            // Changed background to rgba(51,51,51,0.7) and on hover to rgba(68,68,68,0.8)
+            button.style.cssText = 'background:rgba(51,51,51,0.7);color:#fff;border:1px solid #555;padding:8px 12px;border-radius:4px;cursor:pointer;text-align:left;';
+            button.textContent = s;
+            button.addEventListener('mouseover', () => {
+                button.style.background = 'rgba(68,68,68,0.8)';
+                window.dtcHighlightElement(s, true);
+                const el = document.querySelector(s);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+            button.addEventListener('mouseout', () => {
+                button.style.background = 'rgba(51,51,51,0.7)';
+                window.dtcHighlightElement(null, false);
+            });
+            button.addEventListener('click', () => { window.dtcCopy(s, button); });
+            ui.appendChild(button);
+        });
+        document.body.appendChild(ui);
+        return ui;
+    }
+
 
     // --- Cleanup Logic ---
     function cleanup() {
         hideAllHitboxes();
-        const ui = document.getElementById(UI_ID);
-        if (ui) ui.remove();
+        const sideUi = document.getElementById(UI_ID);
+        if (sideUi) sideUi.remove();
+        const topUi = document.getElementById(TOP_UI_ID);
+        if (topUi) topUi.remove();
         document.removeEventListener('keydown', escapeHandler);
         const style = document.getElementById('dtc-animation-styles');
-        if(style) style.remove();
+        if (style) style.remove();
         delete window.dtcCopy;
         delete window.dtcCleaner;
         delete window.dtcHighlightElement;
@@ -166,7 +227,8 @@ javascript:(function(w,d){const UI_ID='dtc-copy-ui',HBC='element-hitbox-active',
     // --- Main Execution ---
     injectAnimationStyles();
     initialCopy();
-    createUI();
+    createSideUI();
+    createTopUI();
     showAllInitialHitboxes();
     document.addEventListener('keydown', escapeHandler);
     window.dtcCleaner = cleanup;
